@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using DropBox.Services;
+using Microsoft.Win32;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,14 +18,27 @@ namespace DropBox
     {
         public MainViewModel ViewModel { get; set; }
         private FileMonitor fileMonitor;
+        private Logger logger;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            logger = new Logger();
+            logger.LogCreated += Logger_LogCreated; // Subscribe to the LogCreated event
+
             ViewModel = new MainViewModel();
-            ViewModel.Items = new List<string> { "One", "Two" };
+            ViewModel.Items = new List<string>();
             this.DataContext = this;
+        }
+
+        private void Logger_LogCreated(object? sender, string logEntry)
+        {
+            // Handle the log entry here
+            var lastEntries = ViewModel.Items;
+            lastEntries.Add(logEntry);
+
+            ViewModel.Items = new List<string>(lastEntries);
         }
 
         private void OpenFileDialogButton_Click(object sender, RoutedEventArgs e)
@@ -51,7 +65,7 @@ namespace DropBox
             if (!ViewModel.IsSyncing)
             {
                 ViewModel.IsSyncing = true;
-                fileMonitor = new FileMonitor(ViewModel.InputFolder);
+                fileMonitor = new FileMonitor(ViewModel.InputFolder, logger);
                 fileMonitor.DirectoryChanged += FileMonitor_DirectoryChanged;
             }
             else

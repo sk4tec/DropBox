@@ -10,13 +10,16 @@ namespace DropBox.Services
     public class FileMonitor : IFileMonitor
     {
         private FileSystemWatcher _fileSystemWatcher;
-        private ILogger logger;
+        private ILogger _logger;
+        private string _pathToMonitor;
 
         public event EventHandler<DirectoryChangedEventArgs> DirectoryChanged;
 
         public FileMonitor(string pathToMonitor, ILogger logger)
         {
-            this.logger = logger;
+            this._logger = logger;
+            this._pathToMonitor = pathToMonitor;
+
             logger.Log("Started..");
 
             if (!Directory.Exists(pathToMonitor))
@@ -39,13 +42,13 @@ namespace DropBox.Services
         private void OnFileAdded(object sender, FileSystemEventArgs e)
         {
             OnDirectoryChanged(new DirectoryChangedEventArgs(e.ChangeType, e.FullPath));
-            logger.Log($"Added {e.FullPath}");
+            _logger.Log($"Added {e.Name} to {_pathToMonitor}");
         }
 
         private void OnFileRemoved(object sender, FileSystemEventArgs e)
         {
             OnDirectoryChanged(new DirectoryChangedEventArgs(e.ChangeType, e.FullPath));
-            logger.Log($"Removed {e.FullPath}");
+            _logger.Log($"Removed {e.Name} from {_pathToMonitor}");
         }
 
         protected virtual void OnDirectoryChanged(DirectoryChangedEventArgs e)
