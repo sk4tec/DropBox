@@ -40,8 +40,8 @@ namespace DropBox
         public MainViewModel()
         {
             Items = new List<string> { "File1", "File2" };
-            InputFolder = "C:\\TEST\\INPUT\\FOLDER";
-            OutputFolder = "C:\\TEST\\OUTPUT\\FOLDER";
+            InputFolder = "C:\\Test\\Input\\";
+            OutputFolder = "C:\\Test\\Output\\";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

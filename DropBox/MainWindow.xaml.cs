@@ -9,12 +9,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FileMonitor = DropBox.Services.FileMonitor;
 
 namespace DropBox
 {
     public partial class MainWindow : Window
     {
         public MainViewModel ViewModel { get; set; }
+        private FileMonitor fileMonitor;
 
         public MainWindow()
         {
@@ -39,8 +41,29 @@ namespace DropBox
             {
                 // Get the selected file path
                 string filePath = openFileDialog.FileName;
-                MessageBox.Show($"Selected file: {filePath}", "File Selected");
             }
+        }
+
+        private void SyncButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Start monitoring the input folder
+            ViewModel.ToggleButtonText();
+
+            if (ViewModel.IsSyncing)
+            {
+                fileMonitor = new FileMonitor(ViewModel.InputFolder);
+                fileMonitor.DirectoryChanged += FileMonitor_DirectoryChanged;
+            }
+            else
+            {
+                fileMonitor?.StopMonitoring();
+            }
+        }
+
+        private void FileMonitor_DirectoryChanged(object? sender, Services.DirectoryChangedEventArgs e)
+        {
+            Console.WriteLine(e.FilePath);
+            Console.Beep();
         }
     }
 }

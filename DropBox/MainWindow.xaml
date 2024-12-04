@@ -36,7 +36,7 @@
             </ScrollViewer>
 
             <!-- Start Button -->
-            <Button Content="Start Synchronizing" Background="Blue" Foreground="White" HorizontalAlignment="Stretch"/>
+            <Button Content="{Binding ViewModel.ButtonText}" Background="Blue" Foreground="White" Click="SyncButton_Click" HorizontalAlignment="Stretch"/>
         </StackPanel>
 
     </Grid>
