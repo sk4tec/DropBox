@@ -11,14 +11,19 @@ namespace DropBox.Services
     {
         private FileSystemWatcher _fileSystemWatcher;
         private ILogger _logger;
+        private FileSupport _fileSupport;
+        
         private string _pathToMonitor;
+        private string _pathTarget;
 
         public event EventHandler<DirectoryChangedEventArgs> DirectoryChanged;
 
-        public FileMonitor(string pathToMonitor, ILogger logger)
+        public FileMonitor(string pathToMonitor, string pathTarget, ILogger logger, FileSupport fileSupport)
         {
+            this._fileSupport = fileSupport;
             this._logger = logger;
             this._pathToMonitor = pathToMonitor;
+            this._pathTarget = pathTarget;
 
             logger.Log("Started..");
 
@@ -42,13 +47,17 @@ namespace DropBox.Services
         private void OnFileAdded(object sender, FileSystemEventArgs e)
         {
             OnDirectoryChanged(new DirectoryChangedEventArgs(e.ChangeType, e.FullPath));
-            _logger.Log($"Added {e.Name} to {_pathToMonitor}");
+            _logger.Log($"Adding.. {e.Name} to {_pathToMonitor}");
+
+            _fileSupport.CopyFile(e.FullPath, Path.Combine(_pathTarget, e.Name));
         }
 
         private void OnFileRemoved(object sender, FileSystemEventArgs e)
         {
             OnDirectoryChanged(new DirectoryChangedEventArgs(e.ChangeType, e.FullPath));
-            _logger.Log($"Removed {e.Name} from {_pathToMonitor}");
+            _logger.Log($"Removing.. {e.Name} from {_pathToMonitor}");
+
+            _fileSupport.DeleteFile(_pathTarget + e.Name);
         }
 
         protected virtual void OnDirectoryChanged(DirectoryChangedEventArgs e)
