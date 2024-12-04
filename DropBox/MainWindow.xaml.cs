@@ -32,6 +32,9 @@ namespace DropBox
 
             ViewModel = new MainViewModel();
             ViewModel.Items = new List<string>();
+
+            fileMonitor = new FileMonitor(ViewModel.InputFolder, ViewModel.OutputFolder, logger, fileSupport);
+
             this.DataContext = this;
         }
 
@@ -83,7 +86,6 @@ namespace DropBox
             if (!ViewModel.IsSyncing)
             {
                 ViewModel.IsSyncing = true;
-                fileMonitor = new FileMonitor(ViewModel.InputFolder, ViewModel.OutputFolder, logger, fileSupport);
                 fileMonitor.DirectoryChanged += FileMonitor_DirectoryChanged;
             }
             else
