@@ -5,6 +5,17 @@ namespace DropBox
     public class MainViewModel : INotifyPropertyChanged
     {
         private List<string> _items;
+        private const string _syncingText = "Syncing";
+        private const string _notSyncingText = "Not Syncing";
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public MainViewModel()
+        {
+            Items = new List<string> { "File1", "File2" };
+            InputFolder = "C:\\Test\\Input\\";
+            OutputFolder = "C:\\Test\\Output\\";
+        }
+
         public List<string> Items
         {
             get { return _items; }
@@ -16,7 +27,7 @@ namespace DropBox
         }
 
         private string _inputFolder;
-        public string InputFolder 
+        public string InputFolder
         {
             get { return _inputFolder; }
             set
@@ -37,14 +48,29 @@ namespace DropBox
             }
         }
 
-        public MainViewModel()
+        private string _buttonText;
+        public string ButtonText
         {
-            Items = new List<string> { "File1", "File2" };
-            InputFolder = "C:\\Test\\Input\\";
-            OutputFolder = "C:\\Test\\Output\\";
+            get { return _isSyncing ? _syncingText : _notSyncingText; }
+            set 
+            {
+                _buttonText = value;
+                OnPropertyChanged(nameof(ButtonText));
+            }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private bool _isSyncing = false;
+        public bool IsSyncing
+        {
+            get { return _isSyncing; }
+            set
+            {
+                _isSyncing = value;
+                OnPropertyChanged(nameof(IsSyncing));
+                OnPropertyChanged(nameof(ButtonText));
+            }
+        }
+
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

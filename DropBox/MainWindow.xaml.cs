@@ -47,15 +47,16 @@ namespace DropBox
         private void SyncButton_Click(object sender, RoutedEventArgs e)
         {
             // Start monitoring the input folder
-            ViewModel.ToggleButtonText();
 
-            if (ViewModel.IsSyncing)
+            if (!ViewModel.IsSyncing)
             {
+                ViewModel.IsSyncing = true;
                 fileMonitor = new FileMonitor(ViewModel.InputFolder);
                 fileMonitor.DirectoryChanged += FileMonitor_DirectoryChanged;
             }
             else
             {
+                ViewModel.IsSyncing = false;
                 fileMonitor?.StopMonitoring();
             }
         }
