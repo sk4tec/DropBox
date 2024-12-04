@@ -44,22 +44,37 @@ namespace DropBox
             ViewModel.Items = new List<string>(lastEntries);
         }
 
-        private void OpenFileDialogButton_Click(object sender, RoutedEventArgs e)
+        private void OpenFolderDialog(string title, Action<string> onFolderSelected)
         {
-            // Create an instance of OpenFileDialog
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            OpenFolderDialog openFolderDialog = new OpenFolderDialog
             {
-                Title = "Select a File",
-                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+                Title = title
             };
 
-            // Show the dialog
-            if (openFileDialog.ShowDialog() == true)
+            if (openFolderDialog.ShowDialog() == true)
             {
-                // Get the selected file path
-                string filePath = openFileDialog.FileName;
+                onFolderSelected(openFolderDialog.FolderName);
             }
         }
+
+        private void OpenFolderDialogButtonInput_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolderDialog("Select a Folder", folderName =>
+            {
+                fileMonitor.pathToMonitor = folderName;
+                ViewModel.InputFolder = folderName;
+            });
+        }
+
+        private void OpenFolderDialogButtonOutput_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFolderDialog("Select a Folder", folderName =>
+            {
+                fileMonitor.pathTarget = folderName;
+                ViewModel.OutputFolder = folderName;
+            });
+        }
+
 
         private void SyncButton_Click(object sender, RoutedEventArgs e)
         {
