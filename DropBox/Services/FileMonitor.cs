@@ -26,7 +26,7 @@ namespace DropBox.Services
             this.pathToMonitor = pathToMonitor;
             this.pathTarget = pathTarget;
 
-            logger.Log("Started..");
+            logger.Log("Ready..");
 
             if (!Directory.Exists(pathToMonitor))
             {

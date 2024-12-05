@@ -5,39 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DropBox"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="350">
+        Title="MainWindow" Height="650" Width="400">
     <Grid>
-        <StackPanel x:Name="RootPanel" Margin="10" HorizontalAlignment="Left">
-            <!-- Title -->
-            <TextBlock Text="SYNCHRONIZING FILES" FontWeight="Bold" Margin="0,0,0,10"/>
-            <!-- Input Folder -->
-            <TextBlock Text="Input" FontWeight="Bold" VerticalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
-                <TextBox Width="200" Margin="0,0,10,0" Text="{Binding ViewModel.InputFolder}"/>
-                <Button Content="Select folder" FontWeight="Bold" Click="OpenFolderDialogButtonInput_Click"/>
+        <StackPanel x:Name="RootPanel" Margin="20" HorizontalAlignment="Left">
+            <TextBlock Text="SYNCHRONIZING FILES" FontWeight="Bold" FontSize="24" Foreground="Blue" FontFamily="Calibri"/>
+            
+            <TextBlock Text="Input" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" FontFamily="Calibri"/>
+            
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,20">
+                <TextBox Width="250" Margin="0,0,10,0" Text="{Binding ViewModel.InputFolder}" FontSize="14" FontFamily="Calibri"/>
+                <Button Content="Select folder" FontWeight="Bold" FontSize="14" Click="OpenFolderDialogButtonInput_Click" FontFamily="Calibri"/>
             </StackPanel>
-            <!-- Target Folder -->
-            <TextBlock Text="Target" FontWeight="Bold" VerticalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
-                <TextBox Width="200" Margin="0,0,10,0" Text="{Binding ViewModel.OutputFolder}"/>
-                <Button Content="Select folder" FontWeight="Bold" Click="OpenFolderDialogButtonOutput_Click"/>
+            
+            <TextBlock Text="Target" FontWeight="Bold" FontSize="16" VerticalAlignment="Center" FontFamily="Calibri"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,20">
+                <TextBox Width="250" Margin="0,0,10,0" Text="{Binding ViewModel.OutputFolder}" FontSize="14" FontFamily="Arial"/>
+                <Button Content="Select folder" FontWeight="Bold" FontSize="14" Click="OpenFolderDialogButtonOutput_Click" FontFamily="Calibri"/>
             </StackPanel>
-            <!-- Status Area -->
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,20">
                 <StackPanel>
-                    <ListView Name="listView" Height="400" ItemsSource="{Binding ViewModel.Items}">
+                    <ListView Name="listView" Height="300" ItemsSource="{Binding ViewModel.Items}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}" Margin="5"/>
+                                <TextBlock Text="{Binding}" Margin="5" FontSize="14" FontFamily="Calibri"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
                 </StackPanel>
             </ScrollViewer>
 
-            <!-- Start Button -->
-            <Button Content="{Binding ViewModel.ButtonText}" Background="Blue" Foreground="White" Click="SyncButton_Click" HorizontalAlignment="Stretch"/>
+            <Button Content="{Binding ViewModel.ButtonText}" Foreground="Black" FontWeight="Bold" FontSize="16" Click="SyncButton_Click" HorizontalAlignment="Stretch" FontFamily="Calibri"/>
         </StackPanel>
-
     </Grid>
 </Window>
