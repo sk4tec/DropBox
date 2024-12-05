@@ -1,5 +1,6 @@
 ﻿using DropBox.Services;
 using Microsoft.Win32;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,7 @@ namespace DropBox
         private FileMonitor fileMonitor;
         private FileSupport fileSupport;
         private Logger logger;
+        private FileSystemWatcherWrapper fileSystemWatcher;
 
         public MainWindow()
         {
@@ -32,8 +34,9 @@ namespace DropBox
 
             ViewModel = new MainViewModel();
             ViewModel.Items = new List<string>();
+            fileSystemWatcher = new FileSystemWatcherWrapper();
 
-            fileMonitor = new FileMonitor(ViewModel.InputFolder, ViewModel.OutputFolder, logger, fileSupport);
+            fileMonitor = new FileMonitor(ViewModel.InputFolder, ViewModel.OutputFolder, logger, fileSupport, fileSystemWatcher);
 
             this.DataContext = this;
         }

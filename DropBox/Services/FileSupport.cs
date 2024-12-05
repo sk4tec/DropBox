@@ -4,7 +4,7 @@ using System.Runtime.InteropServices.Swift;
 
 namespace DropBox.Services
 {
-    public class FileSupport
+    public class FileSupport: IFileSupport
     {
         private readonly ILogger _logger;
 

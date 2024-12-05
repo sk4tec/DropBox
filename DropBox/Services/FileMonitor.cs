@@ -9,19 +9,20 @@ namespace DropBox.Services
 {
     public class FileMonitor : IFileMonitor
     {
-        private FileSystemWatcher _fileSystemWatcher;
+        private IFileSystemWatcher _fileSystemWatcher;
         private ILogger _logger;
-        private FileSupport _fileSupport;
+        private IFileSupport _fileSupport;
         
         public string pathToMonitor { get; set; }
         public string pathTarget { get; set; }
 
         public event EventHandler<DirectoryChangedEventArgs> DirectoryChanged;
 
-        public FileMonitor(string pathToMonitor, string pathTarget, ILogger logger, FileSupport fileSupport)
+        public FileMonitor(string pathToMonitor, string pathTarget, ILogger logger, IFileSupport fileSupport, IFileSystemWatcher fileSystemWatcher)
         {
             this._fileSupport = fileSupport;
             this._logger = logger;
+            this._fileSystemWatcher = fileSystemWatcher;
             this.pathToMonitor = pathToMonitor;
             this.pathTarget = pathTarget;
 
@@ -67,7 +68,7 @@ namespace DropBox.Services
             if (string.IsNullOrEmpty(path)) return;
 
             _fileSystemWatcher?.Dispose();
-            _fileSystemWatcher = new FileSystemWatcher
+            _fileSystemWatcher = new FileSystemWatcherWrapper
             {
                 Path = path,
                 NotifyFilter = NotifyFilters.FileName | NotifyFilters.DirectoryName,
@@ -83,7 +84,6 @@ namespace DropBox.Services
             if (string.IsNullOrEmpty(path)) return;
 
             pathTarget = path;
-
         }
     }
 
