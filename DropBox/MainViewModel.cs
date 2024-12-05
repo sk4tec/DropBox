@@ -4,16 +4,17 @@ namespace DropBox
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private List<string> _items;
+        private List<string> _items = new List<string>();
+
         private const string _syncingText = "Syncing";
         private const string _notSyncingText = "Not Syncing";
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public MainViewModel()
         {
-            Items = new List<string> { "File1", "File2" };
-            InputFolder = "C:\\Test\\Input\\";
-            OutputFolder = "C:\\Test\\Output\\";
+            _inputFolder = "C:\\Test\\Input\\";
+            _outputFolder = "C:\\Test\\Output\\";
+            _buttonText = "";
         }
 
         public List<string> Items

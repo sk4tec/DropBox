@@ -10,21 +10,21 @@ namespace DropBox.Services
     public class FileMonitor : IFileMonitor
     {
         private IFileSystemWatcher _fileSystemWatcher;
-        private ILogger _logger;
-        private IFileSupport _fileSupport;
-        
-        public string pathToMonitor { get; set; }
-        public string pathTarget { get; set; }
+        private readonly ILogger _logger;
+        private readonly IFileSupport _fileSupport;
 
-        public event EventHandler<DirectoryChangedEventArgs> DirectoryChanged;
+        public string PathToMonitor { get; set; }
+        public string PathTarget { get; set; }
+
+        public event EventHandler<DirectoryChangedEventArgs>? DirectoryChanged;
 
         public FileMonitor(string pathToMonitor, string pathTarget, ILogger logger, IFileSupport fileSupport, IFileSystemWatcher fileSystemWatcher)
         {
             this._fileSupport = fileSupport;
             this._logger = logger;
             this._fileSystemWatcher = fileSystemWatcher;
-            this.pathToMonitor = pathToMonitor;
-            this.pathTarget = pathTarget;
+            this.PathToMonitor = pathToMonitor;
+            this.PathTarget = pathTarget;
 
             logger.Log("Ready..");
 
@@ -33,24 +33,25 @@ namespace DropBox.Services
                 logger.Log("Dir error");
                 throw new ArgumentException("The specified directory does not exist.", nameof(pathToMonitor));
             }
-    
+
             ChangeInputPath(pathToMonitor);
         }
 
         private void OnFileAdded(object sender, FileSystemEventArgs e)
         {
+            if (e.Name == null) return;
             OnDirectoryChanged(new DirectoryChangedEventArgs(e.ChangeType, e.FullPath));
-            _logger.Log($"Adding.. {e.Name} to {pathToMonitor}");
+            _logger.Log($"Adding.. {e.Name} to {PathToMonitor}");
 
-            _fileSupport.CopyFile(e.FullPath, Path.Combine(pathTarget, e.Name));
+            _fileSupport.CopyFile(e.FullPath, Path.Combine(PathTarget, e.Name));
         }
 
         private void OnFileRemoved(object sender, FileSystemEventArgs e)
         {
             OnDirectoryChanged(new DirectoryChangedEventArgs(e.ChangeType, e.FullPath));
-            _logger.Log($"Removing.. {e.Name} from {pathToMonitor}");
+            _logger.Log($"Removing.. {e.Name} from {PathToMonitor}");
 
-            _fileSupport.DeleteFile(pathTarget + e.Name);
+            _fileSupport.DeleteFile(PathTarget + e.Name);
         }
 
         protected virtual void OnDirectoryChanged(DirectoryChangedEventArgs e)
@@ -83,7 +84,7 @@ namespace DropBox.Services
         {
             if (string.IsNullOrEmpty(path)) return;
 
-            pathTarget = path;
+            PathTarget = path;
         }
     }
 

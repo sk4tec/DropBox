@@ -1,16 +1,6 @@
 ﻿using DropBox.Services;
 using Microsoft.Win32;
-using System.IO;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using FileMonitor = DropBox.Services.FileMonitor;
 
 namespace DropBox
@@ -67,7 +57,7 @@ namespace DropBox
         {
             OpenFolderDialog("Select a Folder", folderName =>
             {
-                fileMonitor.pathToMonitor = folderName;
+                fileMonitor.PathToMonitor = folderName;
                 ViewModel.InputFolder = folderName;
             });
         }
@@ -76,7 +66,7 @@ namespace DropBox
         {
             OpenFolderDialog("Select a Folder", folderName =>
             {
-                fileMonitor.pathTarget = folderName;
+                fileMonitor.PathTarget = folderName;
                 ViewModel.OutputFolder = folderName;
             });
         }

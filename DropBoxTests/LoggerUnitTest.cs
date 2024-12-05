@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using DropBox.Services;
+﻿using DropBox.Services;
 using Moq;
-using NUnit.Framework;
 
 namespace DropBoxTests
 {
